@@ -31,7 +31,7 @@ It can be noticed the protocol also has a 'withdraw' function this can be used b
 
 2. Change the reflect percentage to a number other than 2!
 
-3. Calculate going from the tSpace to the rSpace and back again using the current rate. The current rate can be found using 'getRate()' function. 
+3. Calculate going from the tSpace to the rSpace and back again using the current rate. The current rate can be found using 'getRate()' function. This exercise can be extended to how the 'balanceOf' function works. Notice in the 'balanceOf' function, the account parameter is passed to a function called 'tokenFromReflection()'.
 
 # Quick Start 🏄 
 
