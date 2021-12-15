@@ -1,45 +1,73 @@
-# 🏗 Scaffold-ETH
+# Rebase/ Reflect/ Elastic Tokens 🪞
 
-> everything you need to build on Ethereum! 🚀
+This repository shows the inner workings of a unique token concept called 'rebase' tokens. Rebase tokens are also known as 'reflective' tokens or 'elastic' tokens due to the way the protocol behaves. This type of protocol was developed in order to split a trasnaction tax accross all holders of a coin, WITHOUT making separate txs to everyone. In this example the reflective tax used is 2%. This means upon every transaction, 2% of that transaction is split between all holders of the coin. The split is weighted meaning accounts with higher balances with recieve more of the 2% and accounts with lower balances. 
 
-🧪 Quickly experiment with Solidity using a frontend that adapts to your smart contract:
+Be careful when using this type of protocol for it differs from a tradional ERC20 token and for this reason is known to cause issues with some exchanges. 
 
-![image](https://user-images.githubusercontent.com/2653167/124158108-c14ca380-da56-11eb-967e-69cde37ca8eb.png)
+It can be noticed the protocol also has a 'withdraw' function this can be used by the contract owner to remove other ERC20 tokens that get sent to the contract externally. 
 
+# Speed Run 🏃
 
-# 🏄‍♂️ Quick Start
+1. Change constructor to mint total supply to your burner wallet, upon deploy. Save contract.
+2. Deploy rebase token to local chain. Yarn Deploy.
+3. Check balance of your burner wallet. Should be 1 Billion tokens.
+    - ![image](https://scaffold-eth-readme-images.s3.amazonaws.com/Screenshot+2021-12-15+120904.png)
+4. Next send 100 tokens to another wallet like punkwallet.io or metmask.io.
+    - ![image](https://scaffold-eth-readme-images.s3.amazonaws.com/Screenshot+2021-12-15+121019.png)
+5. Check the totalFees variable.
+    - ![image](https://scaffold-eth-readme-images.s3.amazonaws.com/Screenshot+2021-12-15+121416.png)
+6. Check balance of the senders account. Should be ((totalSupply - 100) + reflection).
+    - ![image](https://scaffold-eth-readme-images.s3.amazonaws.com/Screenshot+2021-12-15+121434.png)
+7. Check balance of the recievers account. Should be (100 - (2% tax) + reflection).
+    - ![image](https://scaffold-eth-readme-images.s3.amazonaws.com/Screenshot+2021-12-15+121452.png)
+8. Notive if you add the reflections together you will get the totalFees accumulated.
+    - totalReflection = 1.999999803999999607 + 0.000000196000000392 = 2 = 100 * 0.02 = txAmount * reflectTax
+
+*** As more and more transactions occur holders of the token can recieve more tokens from just holding their coins. The flip side is that the rich get richer and the poorer accounts dont see a very high reflection rate since it is based of the amount of tokens in your account. The proportion of tokens your account holds compared to the total supply is the proportion of the reflection you recieve in each transfer and this can be seen in the speed run example. 
+
+### Side Quests
+
+1. You will notice in the smart contract there is a mapping for 'excluded addresses'. This means any addresses in this mapping with the bool set to true will not recieve reflections upon token transfers. 
+
+2. Change the reflect percentage to a number other than 2!
+
+3. Calculate going from the tSpace to the rSpace and back again using the current rate. The current rate can be found using 'getRate()' function. 
+
+# Quick Start 🏄 
 
 Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/) and [Git](https://git-scm.com/downloads)
 
 > clone/fork 🏗 scaffold-eth:
 
 ```bash
-git clone https://github.com/austintgriffith/scaffold-eth.git
+git clone https://github.com/austintgriffith/scaffold-eth.git rebase-token
+cd rebase-token
+git checkout rebase-token
+yarn install
 ```
 
 > install and start your 👷‍ Hardhat chain:
 
 ```bash
-cd scaffold-eth
-yarn install
+cd rebase-token
 yarn chain
 ```
 
 > in a second terminal window, start your 📱 frontend:
 
 ```bash
-cd scaffold-eth
+cd rebase-token
 yarn start
 ```
 
 > in a third terminal window, 🛰 deploy your contract:
 
 ```bash
-cd scaffold-eth
+cd rebase-token
 yarn deploy
 ```
 
-🔏 Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
+🔏 Edit your smart contract `rebaseToken.sol` in `packages/hardhat/contracts`
 
 📝 Edit your frontend `App.jsx` in `packages/react-app/src`
 
@@ -55,42 +83,3 @@ Documentation, tutorials, challenges, and many more resources, visit: [docs.scaf
 
 📕 Read the docs: https://docs.soliditylang.org
 
-📚 Go through each topic from [solidity by example](https://solidity-by-example.org) editing `YourContract.sol` in **🏗 scaffold-eth**
-
-- [Primitive Data Types](https://solidity-by-example.org/primitives/)
-- [Mappings](https://solidity-by-example.org/mapping/)
-- [Structs](https://solidity-by-example.org/structs/)
-- [Modifiers](https://solidity-by-example.org/function-modifier/)
-- [Events](https://solidity-by-example.org/events/)
-- [Inheritance](https://solidity-by-example.org/inheritance/)
-- [Payable](https://solidity-by-example.org/payable/)
-- [Fallback](https://solidity-by-example.org/fallback/)
-
-📧 Learn the [Solidity globals and units](https://solidity.readthedocs.io/en/v0.6.6/units-and-global-variables.html)
-
-# 🛠 Buidl
-
-Check out all the [active branches](https://github.com/austintgriffith/scaffold-eth/branches/active), [open issues](https://github.com/austintgriffith/scaffold-eth/issues), and join/fund the 🏰 [BuidlGuidl](https://BuidlGuidl.com)!
-
-  
- - 🚤  [Follow the full Ethereum Speed Run](https://medium.com/@austin_48503/%EF%B8%8Fethereum-dev-speed-run-bd72bcba6a4c)
-
-
- - 🎟  [Create your first NFT](https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example)
- - 🥩  [Build a staking smart contract](https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking)
- - 🏵  [Deploy a token and vendor](https://github.com/austintgriffith/scaffold-eth/tree/challenge-2-token-vendor)
- - 🎫  [Extend the NFT example to make a "buyer mints" marketplace](https://github.com/austintgriffith/scaffold-eth/tree/buyer-mints-nft)
- - 🎲  [Learn about commit/reveal](https://github.com/austintgriffith/scaffold-eth/tree/commit-reveal-with-frontend)
- - ✍️  [Learn how ecrecover works](https://github.com/austintgriffith/scaffold-eth/tree/signature-recover)
- - 👩‍👩‍👧‍👧  [Build a multi-sig that uses off-chain signatures](https://github.com/austintgriffith/scaffold-eth/tree/meta-multi-sig)
- - ⏳  [Extend the multi-sig to stream ETH](https://github.com/austintgriffith/scaffold-eth/tree/streaming-meta-multi-sig)
- - ⚖️  [Learn how a simple DEX works](https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90)
- - 🦍  [Ape into learning!](https://github.com/austintgriffith/scaffold-eth/tree/aave-ape)
-
-# 💬 Support Chat
-
-Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
-
----
-
-🙏 Please check out our [Gitcoin grant](https://gitcoin.co/grants/2851/scaffold-eth) too!
